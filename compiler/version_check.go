@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"runtime"
 )
 
 // Version is the GopherJS compiler version string.
@@ -21,7 +22,8 @@ const GoVersion = 16
 func CheckGoVersion(goroot string) error {
 	v, err := ioutil.ReadFile(filepath.Join(goroot, "VERSION"))
 	if err != nil {
-		return fmt.Errorf("GopherJS %s requires a Go 1.16.x distribution, but failed to read its VERSION file: %v", Version, err)
+		v = []byte(runtime.Version())
+		// return fmt.Errorf("GopherJS %s requires a Go 1.16.x distribution, but failed to read its VERSION file: %v", Version, err)
 	}
 	if !bytes.HasPrefix(v, []byte("go1.16")) {
 		return fmt.Errorf("GopherJS %s requires a Go 1.16.x distribution, but found version %s", Version, v)
